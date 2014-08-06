@@ -1,0 +1,28 @@
+<!-- Showing that everything (styles, scripts, etc.) are completely encapsulated in the Shadow DOM -->
+<template id="mmmbop-menu-item-template">
+   <style>
+       a { color: orange; }
+    </style>
+    <a href="#" class="underline"><content></content></a>
+</template>
+
+<script>
+// There may be a better way to reference the included document versus the including document
+// I couldn't get it to work inline with the registration though, so this is how I did it
+var thisDoc = document.currentScript.ownerDocument;
+var thatDoc = document;
+    
+// Register the element to the including page
+thatDoc.registerElement('mmmbop-menu-item', {
+    prototype: Object.create(HTMLElement.prototype, {
+      createdCallback: {
+        value: function() {
+            // Find the template within this document (and not the including document)
+            var t = thisDoc.querySelector('#mmmbop-menu-item-template');
+            var clone = thatDoc.importNode(t.content, true);
+            this.createShadowRoot().appendChild(clone);
+        }
+      }
+    })
+});
+</script>

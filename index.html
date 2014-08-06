@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Future Web</title>
+    
+    <!-- HTML IMPORT: Combining custom element registration, Shadow DOM, and HTML Template -->
+    <link rel="import" href="mmmbop-menu-item.html">
+    
+    <style>
+        body { padding: 0; margin: 0 auto; width: 500px; }
+        #app { border: 1px solid #333; background: #EEE; padding: 1em; }
+        
+        /* Style Unresolved (as opposed to Unknown) elements */
+        :unresolved { border: 5px dashed red; display: block; margin: 2em; }
+        
+        /* Custom element styles */
+        mmmbop-title { background: white; }
+        mmmbop-title /deep/ span { word-spacing: 1em; }
+        mmmbop-welcome { display: block; margin: 2em; }
+        
+        
+        /* Demonstrate the closed nature of web components */
+        a { font-weight: bold; color: blue; }
+        
+        /* Style an unknown element */
+        song { padding:.5em; background-color: #FCC; color: #900; font-weight: bold; text-decoration: line-through; }
+	</style>
+
+</head>
+<body>
+    <section>
+        <h3>Oversimplified, Basic Definition of <a href="http://webcomponents.org/">Web Components</a>: </h3>
+        <ol>
+            <li><a href="http://w3c.github.io/webcomponents/spec/custom/">Custom Elements</a> (node names containing a dash)</li>
+            <li><a href="http://w3c.github.io/webcomponents/spec/shadow/">Shadow DOM</a></li>
+            <li><a href="http://www.w3.org/TR/html5/scripting-1.html#the-template-element">HTML Templates</a> (using the &lt;template&gt; tag)</li>
+            <li><a href="http://w3c.github.io/webcomponents/spec/imports/">HTML Imports</a></li>
+            <li><a href="http://webcomponents.org/articles/web-components-best-practices/">Best Practices</a></li>
+        </ol>
+    </section>
+    
+    <section id="app">
+	
+        <mmmbop-title>MyMatch MeetBook Overflow Plus</mmmbop-title>
+
+        <mmmbop-welcome>[NAME]</mmmbop-welcome>
+
+        <mmmbop-menu>
+            <mmmbop-menu-item>Drip</mmmbop-menu-item>
+            <mmmbop-menu-item>Profile</mmmbop-menu-item>
+            <mmmbop-menu-item>Settings</mmmbop-menu-item>
+        </mmmbop-menu>
+
+        <!-- UNRESOLVED, but Valid, custom element -->
+        <mmmbop-drip feed="drops"></mmmbop-drip>
+        
+        <!--INVALID CUSTOM ELEMENT Node Name (no dash) -->
+	    <song>Bop bop doo wop!</song>
+	    <!--Prototype is HTMLUnknownElement-->
+	    
+	</section>
+
+    <!-- A template to be used by a custom element -->
+	<template id="mmmbop-menu-template">
+        <h1>Menu</h1>
+	    <content></content>
+	</template>
+			
+	<script>
+    /*
+        Before your custom elements are registered using document.registerElement they will be :unresolved and receive that style.
+        Unknown elements will not be styled with the :unresolved pseudoclass.
+        When you register your element you are able to define the prototype, which includes some event callbacks, and also define 
+        whether it extends another element.
+        
+        createdCallback = { property: value OR f(x) }              an instance of the element is created
+        attachedCallback = { property: value OR f(x) }             an instance was inserted into the document
+        detachedCallback = { property: value OR f(x) }             an instance was removed from the document
+        attributeChangedCallback(attrName, oldVal, newVal)      an attribute was added, removed, or updated
+    */
+        
+    // Custom Element Registration with document.registerElement
+    document.registerElement('mmmbop-title', {
+        // The prototype that the custom element inherits from defaults to HTMLElement, but can be virtualy any element
+        prototype: Object.create(HTMLElement.prototype, {
+          createdCallback: {
+            // This would normally set the value of the custom element
+            value: function() {
+                this.innerHTML = '<style>.myspace { background: black; color: white; font-family: sans-serif; text-transform: lowercase; padding: 0 .1em; } .match { background: white; color: blue; font-family: monospace; text-transform: lowercase; font-size: 1.5em; } .meetup { border-top: 10px solid red; border-bottom: 10px solid red; font-family: cursive; } .facebook { background: #3366AA; color: white; font-family: monospace; text-transform: lowercase; padding: 0 .1em; font-size: 1.5em;} .stackoverflow { font-weight: bold; font-family: monospace; font-size: 1.5em; text-transform: lowercase; } .plus { background: #d84337; font-weight: bold; font-family: sans-serif; padding: 0 .1em; color: white;} </style><span class="myspace">My</span><span class="match">Match</span> <span class="meetup">Meet</span><span class="facebook">Book</span> <span class="stackoverflow">Overflow</span> <span class="plus">Plus</span></h1>';  
+            }
+          }
+        })
+    });
+        
+    // Custom Element Registration with Shadow DOM 
+    document.registerElement('mmmbop-welcome', {
+        prototype: Object.create(HTMLElement.prototype, {
+            createdCallback: {
+                value: function() {
+                    // Adds the #shadow-root to the element
+                    var root = this.createShadowRoot();
+                    // <content> represents the non-Shadow innards of the element
+                    root.innerHTML = 'Welcome to MMMBOP, <content></content>!';
+                }
+            }
+        })
+    });
+    
+    // Custom Element Registration using a <template>
+    document.registerElement('mmmbop-menu', {
+        prototype: Object.create(HTMLElement.prototype, {
+            createdCallback: {
+                value: function() {
+                    // The <template> tag is not visible in the browser, but can still be used
+                    var t = document.querySelector('#mmmbop-menu-template');
+                    var clone = document.importNode(t.content, true);
+                    this.createShadowRoot().appendChild(clone);
+                }
+            }
+        })
+    });
+    
+//        
+    </script>
+	
+	
+</body>
+</html>
