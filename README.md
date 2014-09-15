@@ -3,11 +3,11 @@ A Simple Mind's Web Components Overview
 
 An over-simplified, basic definition of what [Web Components](http://webcomponents.org) are:
 
-    * [Custom Elements](http://w3c.github.io/webcomponents/spec/custom/) (node names containing a dash)
-    * [Shadow DOM](http://w3c.github.io/webcomponents/spec/shadow/)
-    * [HTML Templates](http://www.w3.org/TR/html5/scripting-1.html#the-template-element) (using the <template> tag)
-    * [HTML Imports](http://w3c.github.io/webcomponents/spec/imports/)
-    * [Best Practices](http://webcomponents.org/articles/web-components-best-practices/)
+* [Custom Elements](http://w3c.github.io/webcomponents/spec/custom/) (node names containing a dash)
+* [Shadow DOM](http://w3c.github.io/webcomponents/spec/shadow/)
+* [HTML Templates](http://www.w3.org/TR/html5/scripting-1.html#the-template-element) (using the <template> tag)
+* [HTML Imports](http://w3c.github.io/webcomponents/spec/imports/)
+* [Best Practices](http://webcomponents.org/articles/web-components-best-practices/)
     
 Browser's native support for each of these things varies, but polyfills help.
 
@@ -36,7 +36,7 @@ Unknown elements will not be styled with the :unresolved pseudoclass. Invalid el
 ```
 
 When you register your element you are able to define the prototype, which includes some event callbacks, and also define 
-whether it extends another element.
+whether it extends another element. The prototype that the custom element inherits from defaults to HTMLElement, but can be virtualy any element.
 
 * createdCallback = { property: value OR f(x) }           an instance of the element is created
 * attachedCallback = { property: value OR f(x) }          an instance was inserted into the document
@@ -46,7 +46,6 @@ whether it extends another element.
 ```js
 // Custom Element Registration with document.registerElement
 document.registerElement('toggle-button', {
-    // The prototype that the custom element inherits from defaults to HTMLElement, but can be virtualy any element
     prototype: Object.create(HTMLElement.prototype, {
       createdCallback: {
         // This would normally set the value attribute of the custom element
@@ -64,9 +63,13 @@ Shadow DOM
 Who knows what evil lurks in the hearts of custom elements? The Shadow DOM knows! In this case, that's a good thing though. 
 The Shadow DOM can utilize the `<content>` tag to drop the innards of the web component into your element.
 
+```html
+<welcome-msg>Star Lord</welcome-msg>
+```
+
 ```js
 // Custom Element Registration with Shadow DOM 
-document.registerElement('mmmbop-welcome', {
+document.registerElement('welcome-msg', {
     prototype: Object.create(HTMLElement.prototype, {
         createdCallback: {
             value: function() {
@@ -123,7 +126,7 @@ Use `<link rel="import" href="">` to pull in the component dependencies and have
 
 ```html
 <link rel="import" href="menu-item.html">
-<!--...-->
+<style> a { text-decoration: none; font-weight: bold; }</style>
 <cool-menu>
     <ul>
         <menu-item>First Menu Item</menu-item>
@@ -134,8 +137,8 @@ Use `<link rel="import" href="">` to pull in the component dependencies and have
 
 menu-item.html
 ```html
-<!-- Showing that everything (styles, scripts, etc.) are completely encapsulated in the Shadow DOM -->
-<template id="mmmbop-menu-item-template">
+<!-- Everything is completely encapsulated in the Shadow DOM -->
+<template id="menu-item-template">
    <style>
        a { color: orange; }
     </style>
@@ -149,12 +152,12 @@ var thisDoc = document.currentScript.ownerDocument;
 var thatDoc = document;
     
 // Register the element to the including page
-thatDoc.registerElement('mmmbop-menu-item', {
+thatDoc.registerElement('menu-item', {
     prototype: Object.create(HTMLElement.prototype, {
       createdCallback: {
         value: function() {
             // Find the template within this document (and not the including document)
-            var t = thisDoc.querySelector('#mmmbop-menu-item-template');
+            var t = thisDoc.querySelector('#menu-item-template');
             var clone = thatDoc.importNode(t.content, true);
             this.createShadowRoot().appendChild(clone);
         }
