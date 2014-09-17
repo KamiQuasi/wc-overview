@@ -2,7 +2,7 @@ body { padding: 0; margin: 0 auto;  }
 #app { }
 
 /* Style Unresolved (as opposed to Unknown) elements */
-:unresolved { border: 5px dashed red; display: block; margin: 2em; padding: .5em; }
+:unresolved { border: 5px dashed #C00; display: block; margin: 2em; padding: .5em; }
 
 /* Custom element styles */
 mmmbop-title { 

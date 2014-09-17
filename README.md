@@ -9,7 +9,9 @@ An over-simplified, basic definition of what [Web Components](http://webcomponen
 * [HTML Imports](http://w3c.github.io/webcomponents/spec/imports/)
 * [Best Practices](http://webcomponents.org/articles/web-components-best-practices/)
     
-Browser's native support for each of these things varies, but polyfills help.
+Browser's native support for each of these things varies, but polyfills help. 
+
+Is it a toy? No, its a versatile interlocking brick system for the web. 
 
     
 Custom Elements
