@@ -5,7 +5,7 @@ An over-simplified, basic definition of what [Web Components](http://webcomponen
 
 * [Custom Elements](http://w3c.github.io/webcomponents/spec/custom/) (node names containing a dash)
 * [Shadow DOM](http://w3c.github.io/webcomponents/spec/shadow/)
-* [HTML Templates](http://www.w3.org/TR/html5/scripting-1.html#the-template-element) (using the <template> tag)
+* [HTML Templates](http://www.w3.org/TR/html5/scripting-1.html#the-template-element) (using the `<template>` tag)
 * [HTML Imports](http://w3c.github.io/webcomponents/spec/imports/)
 * [Best Practices](http://webcomponents.org/articles/web-components-best-practices/)
     
@@ -38,10 +38,10 @@ Unknown elements will not be styled with the :unresolved pseudoclass. Invalid el
 When you register your element you are able to define the prototype, which includes some event callbacks, and also define 
 whether it extends another element. The prototype that the custom element inherits from defaults to HTMLElement, but can be virtualy any element.
 
-* createdCallback = { property: value OR f(x) }           an instance of the element is created
-* attachedCallback = { property: value OR f(x) }          an instance was inserted into the document
-* detachedCallback = { property: value OR f(x) }          an instance was removed from the document
-* attributeChangedCallback(attrName, oldVal, newVal)      an attribute was added, removed, or updated
+* createdCallback = { property: value OR f(x) }           _an instance of the element is created_
+* attachedCallback = { property: value OR f(x) }          _an instance was inserted into the document_
+* detachedCallback = { property: value OR f(x) }          _an instance was removed from the document_
+* attributeChangedCallback(attrName, oldVal, newVal)      _an attribute was added, removed, or updated_
 
 ```js
 // Custom Element Registration with document.registerElement
@@ -110,7 +110,7 @@ document.registerElement('cool-menu', {
         createdCallback: {
             value: function() {
                 // The <template> tag is not visible in the browser, but can still be used
-                var t = document.querySelector('#mmmbop-menu-template');
+                var t = document.querySelector('#menu-template');
                 var clone = document.importNode(t.content, true);
                 this.createShadowRoot().appendChild(clone);
             }

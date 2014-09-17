@@ -1,9 +1,10 @@
 <!-- Showing that everything (styles, scripts, etc.) are completely encapsulated in the Shadow DOM -->
 <template id="mmmbop-menu-item-template">
-   <style>
-       a { color: orange; }
+    <style>
+        a { color: orange; }
+        li { padding: 0; margin: 0; }
     </style>
-    <a href="#" class="underline"><content></content></a>
+    <li><a href="#" class="underline"><content></content></a></li>
 </template>
 
 <script>
