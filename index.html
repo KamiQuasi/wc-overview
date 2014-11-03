@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Future Web</title>
     
-<!--    <link rel="import" href="mmmbop-menu-item.html">-->
+    <link rel="import" href="mmmbop-menu-item.html">
     <link rel="stylesheet" href="main.css">
 
 </head>
@@ -13,7 +13,7 @@
 	
         <mmmbop-title>MyMatch MeetBook Overflow Plus</mmmbop-title>
 
-        <mmmbop-welcome>[NAME]</mmmbop-welcome>
+        <mmmbop-welcome><a href="#">[USER NAME]</a></mmmbop-welcome>
 
         <mmmbop-menu>
             <mmmbop-menu-item>Drip</mmmbop-menu-item>
@@ -23,10 +23,11 @@
     </section>
        
     <section class="examples">   
-        <!-- UNRESOLVED, but Valid, custom element -->
+        <!-- UNRESOLVED, but Valid, custom element; receives unresolved pseudo-class style-->
         <mmmbop-drip feed="drops"></mmmbop-drip>
+        <!--Prototype is HTMLElement-->
         
-        <!--INVALID CUSTOM ELEMENT Node Name (no dash) -->
+        <!--INVALID CUSTOM ELEMENT Node Name (no dash); no unresolved pseudo-class styles -->
 	    <song>Bop bop doo wop!</song>
 	    <!--Prototype is HTMLUnknownElement-->
 	    
@@ -41,7 +42,6 @@
 	</template>
 			
 	<script>        
-    /*
     // Custom Element Registration with document.registerElement
     document.registerElement('mmmbop-title', {
         // The prototype that the custom element inherits from defaults to HTMLElement, but can be virtualy any element
@@ -74,7 +74,7 @@
         prototype: Object.create(HTMLElement.prototype, {
             createdCallback: {
                 value: function() {
-                    // The <template> tag is not visible in the browser, but can still be used
+                    // The <template> tag is parsed, but not rendered in the browser
                     var t = document.querySelector('#mmmbop-menu-template');
                     var clone = document.importNode(t.content, true);
                     this.createShadowRoot().appendChild(clone);
@@ -82,7 +82,9 @@
             }
         })
     });
-    */ 
+
+    console.log(document.createElement('mmmbop-drip').__proto__)
+    console.log(document.createElement('song').__proto__)
     </script>
 	
 	

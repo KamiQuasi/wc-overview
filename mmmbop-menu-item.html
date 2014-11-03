@@ -1,6 +1,7 @@
 <!-- Showing that everything (styles, scripts, etc.) are completely encapsulated in the Shadow DOM -->
 <template id="mmmbop-menu-item-template">
     <style>
+        /* Clearly not overwriting external styles */
         a { color: orange; }
         li { padding: 0; margin: 0; }
     </style>
@@ -20,7 +21,9 @@ thatDoc.registerElement('mmmbop-menu-item', {
         value: function() {
             // Find the template within this document (and not the including document)
             var t = thisDoc.querySelector('#mmmbop-menu-item-template');
-            var clone = thatDoc.importNode(t.content, true);
+            // Intentional Error; Uncaught ReferenceError: p is not defined
+            // Notice that it creates one error per custom element instance
+            var clone = thatDoc.importNode(p.content, true);
             this.createShadowRoot().appendChild(clone);
         }
       }
